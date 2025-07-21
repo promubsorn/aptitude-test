@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/aptitude-test/static/css/main.e6c13ad2.css",
-    "main.js": "/aptitude-test/static/js/main.34ac5130.js",
+    "main.js": "/aptitude-test/static/js/main.cce8c09d.js",
     "static/js/453.267f2dcd.chunk.js": "/aptitude-test/static/js/453.267f2dcd.chunk.js",
     "index.html": "/aptitude-test/index.html",
     "main.e6c13ad2.css.map": "/aptitude-test/static/css/main.e6c13ad2.css.map",
-    "main.34ac5130.js.map": "/aptitude-test/static/js/main.34ac5130.js.map",
+    "main.cce8c09d.js.map": "/aptitude-test/static/js/main.cce8c09d.js.map",
     "453.267f2dcd.chunk.js.map": "/aptitude-test/static/js/453.267f2dcd.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.e6c13ad2.css",
-    "static/js/main.34ac5130.js"
+    "static/js/main.cce8c09d.js"
   ]
 }
