@@ -4,13 +4,14 @@ import Button from '@mui/material/Button';
 const generateQuestion = () => {
   const a = Math.floor(Math.random() * 90 + 10); // two-digit number
   const b = Math.floor(Math.random() * 90 + 10);
-  const op = ["+", "-", "×", "÷"][Math.floor(Math.random() * 4)];
+  const op = ["+", "-", "×"][Math.floor(Math.random() * 3)];
+  // const op = ["+", "-", "×", "÷"][Math.floor(Math.random() * 4)];
   let answer;
   switch (op) {
     case "+": answer = a + b; break;
     case "-": answer = a - b; break;
     case "×": answer = a * b; break;
-    case "÷": answer = parseFloat((a / b).toFixed(2)); break;
+    // case "÷": answer = parseFloat((a / b).toFixed(2)); break;
   }
   return { a, b, op, answer };
 };
@@ -77,7 +78,8 @@ export default function MentalMathApp() {
             onChange={(e) => setUserAnswer(e.target.value)}
             placeholder="Your answer"
           />
-          <Button onClick={checkAnswer}>Submit</Button>
+          <br />
+          <Button variant="contained" sx={{ margin: '10px 20px' }}  onClick={checkAnswer}>Submit</Button>
         </div>
       )}
 
@@ -85,7 +87,7 @@ export default function MentalMathApp() {
         <div className="mt-4">
           <p>{result.correct ? "✅ Correct!" : `❌ Incorrect. Correct answer was ${question.answer}`}</p>
           <p>⏱ Time taken: {result.timeTaken} seconds</p>
-          <Button className="mt-2" onClick={startNewQuestion}>Next Question</Button>
+          <Button variant="contained" className="mt-2" onClick={startNewQuestion}>Next Question</Button>
         </div>
       )}
     </div>
