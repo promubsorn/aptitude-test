@@ -158,18 +158,14 @@ export default function ScanningAppLevel2() {
 
                 <Box mt={3} maxWidth={350} mx="auto">
                     <TextField
-                        label="Your Answer"
-                        variant="outlined"
-                        fullWidth
+                        label={`Enter counts for ${tableData.letter1} and ${tableData.letter2}`}
                         value={userAnswer}
                         onChange={(e) => setUserAnswer(e.target.value)}
-                        inputProps={{
-                            inputMode: "numeric",
-                            pattern: "[0-9, ]*",
-                            style: { textAlign: "center", fontSize: 20 },
-                        }}
                         placeholder="e.g. 4 3 or 4,3"
+                        fullWidth
+                        sx={{ mt: 2 }}
                     />
+
                     <Button variant="contained" fullWidth sx={{ mt: 2 }} onClick={handleSubmit}>
                         Submit
                     </Button>
