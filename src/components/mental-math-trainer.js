@@ -1,34 +1,38 @@
 import React, { useEffect, useState } from "react";
-import Button from '@mui/material/Button';
+import { Box, Typography, Button, TextField, Paper } from "@mui/material";
+import { useNavigate } from 'react-router-dom';
+
 
 const generateQuestion = () => {
-  const a = Math.floor(Math.random() * 90 + 10); // two-digit number
+  const a = Math.floor(Math.random() * 90 + 10);
   const b = Math.floor(Math.random() * 90 + 10);
   const op = ["+", "-", "×"][Math.floor(Math.random() * 3)];
-  // const op = ["+", "-", "×", "÷"][Math.floor(Math.random() * 4)];
   let answer;
   switch (op) {
     case "+": answer = a + b; break;
     case "-": answer = a - b; break;
     case "×": answer = a * b; break;
-    // case "÷": answer = parseFloat((a / b).toFixed(2)); break;
   }
   return { a, b, op, answer };
 };
 
-const speak = (text) => {
+const speak = (text, onEnd) => {
   const synth = window.speechSynthesis;
-  if (synth.speaking) synth.cancel();
   const utter = new SpeechSynthesisUtterance(text);
+  utter.onend = () => {
+    if (onEnd) onEnd();
+  };
   synth.speak(utter);
 };
 
 export default function MentalMathApp() {
+  const navigate = useNavigate();
   const [question, setQuestion] = useState(null);
   const [showQuestion, setShowQuestion] = useState(false);
   const [userAnswer, setUserAnswer] = useState("");
   const [startTime, setStartTime] = useState(null);
   const [result, setResult] = useState(null);
+  const [hasStarted, setHasStarted] = useState(false);
 
   const startNewQuestion = () => {
     const q = generateQuestion();
@@ -38,12 +42,14 @@ export default function MentalMathApp() {
     setUserAnswer("");
     setStartTime(Date.now());
 
-    const spokenText = `What is ${q.a} ${q.op === "×" ? "times" : q.op === "÷" ? "divided by" : q.op} ${q.b}?`;
+    const opText = q.op === "×" ? "times" : q.op === "-" ? "minus" : q.op;
+    const spokenText = `What is ${q.a} ${opText} ${q.b}?`;
+
     speak(spokenText);
 
     setTimeout(() => {
       setShowQuestion(false);
-    }, 5000);
+    }, 2000);
   };
 
   const checkAnswer = () => {
@@ -53,43 +59,82 @@ export default function MentalMathApp() {
     setResult({ correct, timeTaken });
   };
 
-  useEffect(() => {
-    startNewQuestion();
-  }, []);
-
   return (
-    <div className="p-6 max-w-md mx-auto space-y-4">
-      <h1 className="text-2xl font-bold">Mental Math Trainer</h1>
+    <Box
+      minHeight="100vh"
+      display="flex"
+      alignItems="center"
+      justifyContent="center"
+      bgcolor="#f5f5f5"
+      p={2}
+    >
+      <Paper elevation={6} sx={{ p: 4, maxWidth: 500, width: '100%', textAlign: 'center' }}>
+        <Box display="flex" justifyContent="flex-start" mb={2}>
+          <Button size="small" variant="text" onClick={() => navigate("/")}>
+            ← Back to Homepage
+          </Button>
+        </Box>
+        <Typography variant="h4" fontWeight="bold" gutterBottom color="primary">
+          Mental Math Trainer
+        </Typography>
 
-      {showQuestion && question ? (
-        <div className="text-xl font-semibold">
-          What is {question.a} {question.op} {question.b} ?
-        </div>
-      ) : (
-        <div className="text-gray-500">Answer the question...</div>
-      )}
+        {!hasStarted ? (
+          <Button variant="contained" onClick={() => { setHasStarted(true); startNewQuestion(); }}>
+            Start Test
+          </Button>
+        ) : (
+          <>
+            {showQuestion && question ? (
+              <Typography variant="h2" fontWeight="bold" color="text.secondary">
+                {question.a} {question.op} {question.b}
+              </Typography>
+            ) : (
+              <Typography variant="h6" color="text.disabled">
+                Answer the question below
+              </Typography>
+            )}
 
-      {!showQuestion && (
-        <div className="space-y-2">
-          <input
-            type="text"
-            className="border p-2 w-full"
-            value={userAnswer}
-            onChange={(e) => setUserAnswer(e.target.value)}
-            placeholder="Your answer"
-          />
-          <br />
-          <Button variant="contained" sx={{ margin: '10px 20px' }}  onClick={checkAnswer}>Submit</Button>
-        </div>
-      )}
+            {!showQuestion && (
+              <Box mt={3}>
+                <TextField
+                  variant="outlined"
+                  fullWidth
+                  value={userAnswer}
+                  onChange={(e) => setUserAnswer(e.target.value)}
+                  placeholder="Your answer"
+                  inputProps={{ style: { fontSize: 24, textAlign: 'center' } }}
+                />
+                <Button
+                  variant="contained"
+                  fullWidth
+                  sx={{ mt: 2 }}
+                  onClick={checkAnswer}
+                >
+                  Submit
+                </Button>
+              </Box>
+            )}
 
-      {result && (
-        <div className="mt-4">
-          <p>{result.correct ? "✅ Correct!" : `❌ Incorrect. Correct answer was ${question.answer}`}</p>
-          <p>⏱ Time taken: {result.timeTaken} seconds</p>
-          <Button variant="contained" className="mt-2" onClick={startNewQuestion}>Next Question</Button>
-        </div>
-      )}
-    </div>
+            {result && (
+              <Box mt={4}>
+                <Typography variant="h5" color={result.correct ? "success.main" : "error"}>
+                  {result.correct ? "✅ Correct!" : `❌ Incorrect. The answer was ${question.answer}`}
+                </Typography>
+                <Typography variant="body1" mt={1}>
+                  ⏱ Time taken: {result.timeTaken} seconds
+                </Typography>
+                <Button
+                  variant="outlined"
+                  sx={{ mt: 2 }}
+                  onClick={startNewQuestion}
+                >
+                  Next Question
+                </Button>
+              </Box>
+            )}
+          </>
+        )}
+      </Paper>
+    </Box>
   );
 }
