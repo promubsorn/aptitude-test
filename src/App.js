@@ -6,6 +6,7 @@ import ScanningApp from './components/scanning-app';
 import ScanningAppLevel2 from './components/scanning-app-2'; 
 import { Box, Typography, Button, Stack, Paper } from "@mui/material";
 import AirplaneTicketIcon from '@mui/icons-material/AirplaneTicket';
+import MemoryTestApp from './components/memory-test';
 function Home() {
   return (
     <Box
@@ -52,6 +53,15 @@ function Home() {
           >
             🔥 Scanning Test Lv.2
           </Button>
+          <Button
+            component={Link}
+            to="/memory-test"
+            variant="outlined"
+            size="large"
+            fullWidth
+          >
+            🧠 Memory Test
+          </Button>
         </Stack>
       </Paper>
     </Box>
@@ -67,6 +77,7 @@ function App() {
         <Route path="/mental-math" element={<MentalMathApp />} />
         <Route path="/scanning-test" element={<ScanningApp />} />
         <Route path="/scanning-test-2" element={<ScanningAppLevel2 />} />
+        <Route path="/memory-test" element={<MemoryTestApp />} />
         {/* Add more routes for other tests */}
       </Routes>
     </BrowserRouter>
