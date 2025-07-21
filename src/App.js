@@ -1,21 +1,9 @@
-// import React from 'react';
-// import { BrowserRouter } from "react-router-dom";
-// import MentalMathApp from './components/mental-math-trainer';
-
-// function App() {
-//   return (
-//     <BrowserRouter basename="/mental-math">
-//       <MentalMathApp />
-//     </BrowserRouter>
-//   );
-// }
-
-// export default App;
 
 import React from 'react';
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import MentalMathApp from './components/mental-math-trainer';
 import ScanningApp from './components/scanning-app'; 
+import ScanningAppLevel2 from './components/scanning-app-2'; 
 import { Box, Typography, Button, Stack, Paper } from "@mui/material";
 import AirplaneTicketIcon from '@mui/icons-material/AirplaneTicket';
 function Home() {
@@ -55,6 +43,15 @@ function Home() {
           >
             👀 Scanning Test
           </Button>
+          <Button
+            component={Link}
+            to="/scanning-test-2"
+            variant="outlined"
+            size="large"
+            fullWidth
+          >
+            🔥 Scanning Test Lv.2
+          </Button>
         </Stack>
       </Paper>
     </Box>
@@ -69,6 +66,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/mental-math" element={<MentalMathApp />} />
         <Route path="/scanning-test" element={<ScanningApp />} />
+        <Route path="/scanning-test-2" element={<ScanningAppLevel2 />} />
         {/* Add more routes for other tests */}
       </Routes>
     </BrowserRouter>
